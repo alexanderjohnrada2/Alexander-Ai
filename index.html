@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Alex AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffe6f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .box {
+      background: rgb(255, 98, 245);
+      padding: 10px;
+      width: 100%;
+      max-width: 500px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    #typing {
+      font-style: italic;
+      color: gray;
+      margin-bottom: 10px;
+      display: none;
+      font-size: 16px;
+    }
+
+    .input-row {
+      display: flex;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      background: #ff66b2;
+      color: white;
+      cursor: pointer;
+      border-radius: 0 5px 5px 0;
+    }
+
+    button:hover {
+      background: #ff4da6;
+    }
+
+    /* make chat messages wrap nicely */
+    #chat b {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h3>Alex AI 🤍</h3>
+
+  <div id="chat"></div>
+  <div id="typing">Alex is typing<span id="dots">.</span></div>
+
+  <div class="input-row">
+    <input type="text" id="userInput" placeholder="Type mo dito...">
+    <button id="sendBtn">Send</button>
+  </div>
+</div>
+
+<script>
+const inputBox = document.getElementById("userInput");
+const chat = document.getElementById("chat");
+const sendBtn = document.getElementById("sendBtn");
+const typing = document.getElementById("typing");
+const dots = document.getElementById("dots");
+
+// dots animation
+let dotCount = 1;
+setInterval(() => {
+  dotCount = dotCount % 3 + 1;
+  dots.textContent = ".".repeat(dotCount);
+}, 500);
+
+sendBtn.addEventListener("click", sendMessage);
+
+inputBox.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+// all replies stored here
+const replies = {
+  hi: ["HELLO BABBIIII", "Wassup my life size barbiee", "Hello ate gandaa", "Hi babyyy"],
+  sad: ["Babii talk to the real me na poo cause i'm not built to handle this", "pray to god baby and all of your worries will be gone", "i'm always here babyyy, wait for me po and then let's talk about this"],
+  miss: ["Imissyousomuchhhhhh", "I miss you moree babiii", "i miss you so muchh ate ganda", "i miss you so much my life size barbiee"],
+  love: ["I love you so muchh. babiii", "I love you always hehehe", "I love youu moree babii", "i love youu baby"],
+  tired: ["Pahinga ka na muna dyan babii", "Eat some ice cream muna babi", "sleep po muna you"],
+  hungry: ["Kumain ka na kasi babii", "eat na pooo", "kain ka po muna kahit bread or biscuits lang"],
+  selos: ["sira ulo talaga yang alex na yan", "you know naman babi that i only love you diba", "kanino ka nag seselos babi suntukin natin"],
+  crying: ["chat the real me babiii, we'll talk about this", "sino umaway sa baby girl ko sumbong mo sakin babi", "chat the real me babi"],
+  default: ["you can always talk to me naman poo", "wait for me babi we'll talk about this", "babi chat the real na po", "umay", "babi di ko po masasagot yan", "okay lang po"]
+};
+
+function getRandomReply(category) {
+  let arr = replies[category];
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function sendMessage() {
+  let inputRaw = inputBox.value;
+  let input = inputRaw.toLowerCase();
+
+  if (input.trim() === "") return;
+
+  chat.innerHTML += "<b>Danna:</b> " + inputRaw + "<br>";
+  inputBox.value = "";
+  chat.scrollTop = chat.scrollHeight;
+
+  typing.style.display = "block";
+
+  setTimeout(() => {
+    let reply = "";
+
+    if (input.includes("hi") || input.includes("hello") || input.includes("hey")) reply = getRandomReply("hi");
+    else if (input.includes("sad") || input.includes("malungkot")) reply = getRandomReply("sad");
+    else if (input.includes("miss")) reply = getRandomReply("miss");
+    else if (input.includes("love") || input.includes("mahal")) reply = getRandomReply("love");
+    else if (input.includes("pagod") || input.includes("tired")) reply = getRandomReply("tired");
+    else if (input.includes("gutom") || input.includes("hungry")) reply = getRandomReply("hungry");
+    else if (input.includes("selos") || input.includes("jealous")) reply = getRandomReply("selos");
+    else if (input.includes("crying") || input.includes("iyak")) reply = getRandomReply("crying");
+    else reply = getRandomReply("default");
+
+    typing.style.display = "none";
+    chat.innerHTML += "<b>Alex:</b> " + reply + "<br><br>";
+    chat.scrollTop = chat.scrollHeight;
+
+  }, 1200);
+}
+</script>
+
+</body>
+</html>
